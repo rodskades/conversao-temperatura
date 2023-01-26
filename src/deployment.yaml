@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: convert-temperature
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: convert-temperature
+  template:
+    metadata:
+      labels:
+        app: convert-temperature
+    spec:
+      containers:
+      - name: convert-temperature
+        image: rodskades/conversao-temperatura
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: convert-temperature-service
+spec:
+  selector:
+    app: convert-temperature
+  ports:
+  - name: http
+    protocol: TCP
+    port: 30000
+    targetPort: 80
+  type: NodePort
